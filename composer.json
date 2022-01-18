@@ -1,0 +1,14 @@
+{
+  "name": "tostrander/328/my-diner",
+  "description": "My Diner Project",
+  "license": "open source",
+  "authors": [
+    {
+      "name": "Tina Ostrander",
+      "email": "tostrander@greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
