@@ -1,5 +1,4 @@
 <?php
-
 //This is my CONTROLLER
 
 //Turn on error reporting
