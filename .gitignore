@@ -1,0 +1,6 @@
+#  .gitignore
+#  Contains all of the files and folders I want git to ignore
+
+composer.lock
+tmp/
+vendor/
