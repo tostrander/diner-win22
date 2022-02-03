@@ -73,7 +73,13 @@ $f3->route('GET|POST /order2', function($f3) {
         //TODO: Validate the data
 
         //Add the data to the session variable
-        $_SESSION['conds'] = $_POST['conds'];
+        //If condiments were selected
+        if (isset($_POST['conds'])) {
+            $_SESSION['conds'] = implode(", ", $_POST['conds']);
+        }
+        else {
+            $_SESSION['conds'] = "None selected";
+        }
 
         //Redirect user to summary page
         $f3->reroute('summary');
@@ -81,6 +87,17 @@ $f3->route('GET|POST /order2', function($f3) {
 
     $view = new Template();
     echo $view->render('views/orderForm2.html');
+});
+
+//Define a summary route
+$f3->route('GET /summary', function() {
+    //echo "<h1>My Diner</h1>";
+
+    $view = new Template();
+    echo $view->render('views/summary.html');
+
+    //Clear the session data
+    session_destroy();
 });
 
 //Run fat-free
