@@ -1,11 +1,7 @@
-a.btn-primary {
-    background-color: #0b2e13;
-    border-color: #2b542c;
-    color: white !important;
-    margin-top: 0.3em;
-}
-
-a:hover {
-    background-color: #2b542c !important;
-    border-color: #0b2e13 !important;
+.btn {
+    background: lightblue;
+    color: darkblue;
+    width: 15em;
+    font-weight: bold;
+    margin-top: 1em;
 }
