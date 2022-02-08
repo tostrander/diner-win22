@@ -10,11 +10,9 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Select condiments</label>
                 <div class="col-sm-4">
-                    <label><input type="checkbox" name="conds[]" value="ketchup"> Ketchup</label><br>
-                    <label><input type="checkbox" name="conds[]" value="mustard"> Mustard</label><br>
-                    <label><input type="checkbox" name="conds[]" value="mayo"> Mayonnaise</label><br>
-                    <label><input type="checkbox" name="conds[]" value="salsa"> Salsa</label><br>
-                    <label><input type="checkbox" name="conds[]" value="sriracha"> Sriracha</label><br>
+                    <repeat group="{{ @conds }}" value="{{ @cond }}">
+                        <label><input type="checkbox" name="conds[]" value="{{ @cond }}"> {{ ucfirst(@cond) }}</label><br>
+                    </repeat>
                 </div>
             </div>
             <div class="col-xs-3 ">

@@ -9,11 +9,12 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 //Start the session
-session_start();
-var_dump($_SESSION);
+//session_start();
+//var_dump($_SESSION);
 
 //Require the autoload file
 require_once('vendor/autoload.php');
+require('model/data-layer.php');
 
 //Create an instance of the Base class
 $f3 = Base::instance();
@@ -52,8 +53,11 @@ $f3->route('GET|POST /order1', function($f3) {
         //TODO: Validate the data
 
         //Add the data to the session variable
-        $_SESSION['food'] = $_POST['food'];
-        $_SESSION['meal'] = $_POST['meal'];
+        //$_SESSION['food'] = $_POST['food'];
+        //$_SESSION['meal'] = $_POST['meal'];
+
+        $f3->set('SESSION.food', $f3->get('POST.food'));
+        $f3->set('SESSION.meal', $f3->get('POST.meal'));
 
         //Redirect user to next page
         $f3->reroute('order2');
@@ -67,6 +71,9 @@ $f3->route('GET|POST /order1', function($f3) {
 $f3->route('GET|POST /order2', function($f3) {
     //echo "<h1>Order 1 Form</h1>";
 
+    //Get the condiments from the model and add to F3 hive
+    $f3->set('conds', getCondiments());
+
     //If the form has been posted
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -75,11 +82,15 @@ $f3->route('GET|POST /order2', function($f3) {
         //Add the data to the session variable
         //If condiments were selected
         if (isset($_POST['conds'])) {
-            $_SESSION['conds'] = implode(", ", $_POST['conds']);
+            //$_SESSION['conds'] = implode(", ", $_POST['conds']);
+            $conds = implode(", ", $f3->get('POST.conds'));
+
         }
         else {
-            $_SESSION['conds'] = "None selected";
+            //$_SESSION['conds'] = "None selected";
+            $conds = "None selected";
         }
+        $f3->set('SESSION.conds', $conds);
 
         //Redirect user to summary page
         $f3->reroute('summary');
@@ -92,6 +103,8 @@ $f3->route('GET|POST /order2', function($f3) {
 //Define a summary route
 $f3->route('GET /summary', function() {
     //echo "<h1>My Diner</h1>";
+
+    //TODO: Send data to the model
 
     $view = new Template();
     echo $view->render('views/summary.html');
