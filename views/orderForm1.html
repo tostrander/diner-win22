@@ -10,6 +10,11 @@
             <div class="form-group">
                 <label for="food" class="col-sm-4 control-label">What food would you like to order?</label>
                 <div class="col-sm-4"><input class="form-control" type="text" name="food" id="food" ></div>
+
+                <!-- Display an error if there is one -->
+                <check if="{{ isset(@errors['food']) }}">
+                    <span class="err">{{ @errors['food'] }}</span>
+                </check>
             </div>
             <br>
 

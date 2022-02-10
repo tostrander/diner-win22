@@ -15,6 +15,7 @@ error_reporting(E_ALL);
 //Require the autoload file
 require_once('vendor/autoload.php');
 require('model/data-layer.php');
+require('model/validation-functions.php');
 
 //Create an instance of the Base class
 $f3 = Base::instance();
@@ -50,17 +51,24 @@ $f3->route('GET|POST /order1', function($f3) {
     //If the form has been posted
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+        // = $f3->get('POST.food');
+        $food = $_POST['food'];
+
         //TODO: Validate the data
+        if(validFood($food)) {
+            //Add the data to the session variable
+            //$_SESSION['food'] = $_POST['food'];
+            //$_SESSION['meal'] = $_POST['meal'];
 
-        //Add the data to the session variable
-        //$_SESSION['food'] = $_POST['food'];
-        //$_SESSION['meal'] = $_POST['meal'];
+            $f3->set('SESSION.food', $food);
+            $f3->set('SESSION.meal', $f3->get('POST.meal'));
 
-        $f3->set('SESSION.food', $f3->get('POST.food'));
-        $f3->set('SESSION.meal', $f3->get('POST.meal'));
-
-        //Redirect user to next page
-        $f3->reroute('order2');
+            //Redirect user to next page
+            $f3->reroute('order2');
+        }
+        else {
+            $f3->set('errors["food"]', 'Please enter a food');
+        }
     }
 
     $view = new Template();
