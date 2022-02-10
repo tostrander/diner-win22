@@ -14,8 +14,10 @@ function validMeal($meal)
 
 function validCondiments($userConds)
 {
+    //Store the valid condiments
     $condiments = getCondiments();
 
+    //Check each selected condiment
     foreach($userConds as $selection) {
         if (!in_array($selection, $condiments)) {
             return false;

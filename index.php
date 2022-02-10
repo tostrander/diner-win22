@@ -45,7 +45,10 @@ $f3->route('GET /lunch', function() {
 
 //Define a route for order 1
 $f3->route('GET|POST /order1', function($f3) {
-    //echo "<h1>Order 1 Form</h1>";
+
+    //Initialize input variables
+    $food = "";
+    $meal = "";
 
     //If the form has been posted
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -83,6 +86,10 @@ $f3->route('GET|POST /order1', function($f3) {
         }
     }
 
+    $f3->set('food', $food);
+    $f3->set('userMeal', $meal);
+    $f3->set('meals', getMeals());
+
     $view = new Template();
     echo $view->render('views/orderForm1.html');
 });
@@ -95,8 +102,6 @@ $f3->route('GET|POST /order2', function($f3) {
 
     //If the form has been posted
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-        //TODO: Validate the data
 
         //Add the data to the session variable
         //If condiments were selected
