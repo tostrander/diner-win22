@@ -29,6 +29,11 @@
                     <label><input type="radio" name="meal" value="dinner" > Dinner
                     </label><br>
                 </div>
+
+                <!-- Display an error if there is one -->
+                <check if="{{ isset(@errors['meal']) }}">
+                    <span class="err">{{ @errors['meal'] }}</span>
+                </check>
             </div>
 
             <div class="col-xs-3 ">

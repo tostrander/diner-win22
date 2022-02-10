@@ -53,6 +53,7 @@ $f3->route('GET|POST /order1', function($f3) {
 
         // = $f3->get('POST.food');
         $food = $_POST['food'];
+        $meal = $_POST['meal'];
 
         //TODO: Validate the data
         if(validFood($food)) {
@@ -61,13 +62,21 @@ $f3->route('GET|POST /order1', function($f3) {
             //$_SESSION['meal'] = $_POST['meal'];
 
             $f3->set('SESSION.food', $food);
-            $f3->set('SESSION.meal', $f3->get('POST.meal'));
-
-            //Redirect user to next page
-            $f3->reroute('order2');
         }
         else {
             $f3->set('errors["food"]', 'Please enter a food');
+        }
+
+        if(validMeal($meal)) {
+            $f3->set('SESSION.meal', $meal);
+        }
+        else {
+            $f3->set('errors["meal"]', 'Please select a valid meal');
+        }
+
+        //Redirect user to next page if there are no errors
+        if (empty($f3->get('errors'))) {
+            $f3->reroute('order2');
         }
     }
 
