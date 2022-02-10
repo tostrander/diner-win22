@@ -9,8 +9,8 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 //Start the session
-//session_start();
-//var_dump($_SESSION);
+session_start();
+var_dump($_SESSION);
 
 //Require the autoload file
 require_once('vendor/autoload.php');
@@ -38,7 +38,6 @@ $f3->route('GET /breakfast', function() {
 
 //Define a lunch route
 $f3->route('GET /lunch', function() {
-    //echo "<h1>My Diner</h1>";
 
     $view = new Template();
     echo $view->render('views/lunch-menu.html');
@@ -55,22 +54,26 @@ $f3->route('GET|POST /order1', function($f3) {
         $food = $_POST['food'];
         $meal = $_POST['meal'];
 
-        //TODO: Validate the data
+        //Validate the data
         if(validFood($food)) {
-            //Add the data to the session variable
-            //$_SESSION['food'] = $_POST['food'];
-            //$_SESSION['meal'] = $_POST['meal'];
 
-            $f3->set('SESSION.food', $food);
+            //Add the data to the session variable
+            $_SESSION['food'] = $_POST['food'];
         }
         else {
+
+            //Set an error
             $f3->set('errors["food"]', 'Please enter a food');
         }
 
         if(validMeal($meal)) {
-            $f3->set('SESSION.meal', $meal);
+
+            //Add the data to the session variable
+            $_SESSION['meal'] = $_POST['meal'];
         }
         else {
+
+            //Set an error
             $f3->set('errors["meal"]', 'Please select a valid meal');
         }
 
@@ -86,7 +89,6 @@ $f3->route('GET|POST /order1', function($f3) {
 
 //Define a route for order 2
 $f3->route('GET|POST /order2', function($f3) {
-    //echo "<h1>Order 1 Form</h1>";
 
     //Get the condiments from the model and add to F3 hive
     $f3->set('conds', getCondiments());
@@ -99,18 +101,27 @@ $f3->route('GET|POST /order2', function($f3) {
         //Add the data to the session variable
         //If condiments were selected
         if (isset($_POST['conds'])) {
-            //$_SESSION['conds'] = implode(", ", $_POST['conds']);
-            $conds = implode(", ", $f3->get('POST.conds'));
 
+            $conds = $_POST['conds'];
+
+            //If condiments are valid
+            if (validCondiments($conds)) {
+                $conds = implode(", ", $_POST['conds']);
+            }
+            else {
+                $f3->set("errors['cond']", "Invalid selection");
+            }
         }
         else {
-            //$_SESSION['conds'] = "None selected";
+
             $conds = "None selected";
         }
-        $f3->set('SESSION.conds', $conds);
 
         //Redirect user to summary page
-        $f3->reroute('summary');
+        if (empty($f3->get('errors'))) {
+            $_SESSION['conds'] = $conds;
+            $f3->reroute('summary');
+        }
     }
 
     $view = new Template();
