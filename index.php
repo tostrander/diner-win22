@@ -8,14 +8,15 @@ ob_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-//Start the session
-session_start();
-var_dump($_SESSION);
-
 //Require the autoload file
 require_once('vendor/autoload.php');
 require('model/data-layer.php');
 require('model/validation-functions.php');
+//require('classes/order.php');
+
+//Start the session
+session_start();
+var_dump($_SESSION);
 
 //Create an instance of the Base class
 $f3 = Base::instance();
@@ -57,11 +58,17 @@ $f3->route('GET|POST /order1', function($f3) {
         $food = $_POST['food'];
         $meal = $_POST['meal'];
 
+        //Instantiate an order object
+        //$order = new Order();
+        //$_SESSION['order'] = $order;
+
+        $_SESSION['order'] = new Order();
+
         //Validate the data
         if(validFood($food)) {
 
             //Add the data to the session variable
-            $_SESSION['food'] = $_POST['food'];
+            $_SESSION['order']->setFood($food);
         }
         else {
 
@@ -72,7 +79,7 @@ $f3->route('GET|POST /order1', function($f3) {
         if(validMeal($meal)) {
 
             //Add the data to the session variable
-            $_SESSION['meal'] = $_POST['meal'];
+            $_SESSION['order']->setMeal($meal);
         }
         else {
 
@@ -124,7 +131,7 @@ $f3->route('GET|POST /order2', function($f3) {
 
         //Redirect user to summary page
         if (empty($f3->get('errors'))) {
-            $_SESSION['conds'] = $conds;
+            $_SESSION['order']->setCondiments($conds);
             $f3->reroute('summary');
         }
     }

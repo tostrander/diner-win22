@@ -4,8 +4,8 @@
 <body>
 <div class="container">
     <h1>Thank you for your order!</h1>
-    <p>Thank you for ordering {{ @SESSION.food }} for {{ @SESSION.meal }}</p>
-    <p>Condiments: {{ @SESSION.conds }}</p>
+    <p>Thank you for ordering {{ @SESSION.order->getFood() }} for {{ @SESSION.order->getMeal() }}</p>
+    <p>Condiments: {{ @SESSION.order->getCondiments() }}</p>
 
     <a href="order1">Place another order</a><br>
     <a href="{{ @BASE }}">Home Page</a>
