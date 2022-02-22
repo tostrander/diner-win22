@@ -2,6 +2,9 @@
 
 //  328/my-diner/classes/order.php
 
+/**
+ * Order class represents a customer's diner order
+ */
 class Order
 {
     private $_food;
@@ -70,8 +73,4 @@ class Order
     {
         $this->_condiments = $condiments;
     }
-
-
-
-
 }

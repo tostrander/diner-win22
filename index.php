@@ -10,9 +10,6 @@ error_reporting(E_ALL);
 
 //Require the autoload file
 require_once('vendor/autoload.php');
-require('model/data-layer.php');
-require('model/validation-functions.php');
-//require('classes/order.php');
 
 //Start the session
 session_start();
@@ -20,13 +17,14 @@ var_dump($_SESSION);
 
 //Create an instance of the Base class
 $f3 = Base::instance();
+$con = new Controller($f3);
 
 //Define a default route
 $f3->route('GET /', function() {
-    //echo "<h1>My Diner</h1>";
+    $GLOBALS['con']->home();
 
-    $view = new Template();
-    echo $view->render('views/home.html');
+    //global $con;
+    //$con->home();
 });
 
 //Define a breakfast route
@@ -47,110 +45,19 @@ $f3->route('GET /lunch', function() {
 //Define a route for order 1
 $f3->route('GET|POST /order1', function($f3) {
 
-    //Initialize input variables
-    $food = "";
-    $meal = "";
-
-    //If the form has been posted
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-        // = $f3->get('POST.food');
-        $food = $_POST['food'];
-        $meal = $_POST['meal'];
-
-        //Instantiate an order object
-        //$order = new Order();
-        //$_SESSION['order'] = $order;
-
-        $_SESSION['order'] = new Order();
-
-        //Validate the data
-        if(validFood($food)) {
-
-            //Add the data to the session variable
-            $_SESSION['order']->setFood($food);
-        }
-        else {
-
-            //Set an error
-            $f3->set('errors["food"]', 'Please enter a food');
-        }
-
-        if(validMeal($meal)) {
-
-            //Add the data to the session variable
-            $_SESSION['order']->setMeal($meal);
-        }
-        else {
-
-            //Set an error
-            $f3->set('errors["meal"]', 'Please select a valid meal');
-        }
-
-        //Redirect user to next page if there are no errors
-        if (empty($f3->get('errors'))) {
-            $f3->reroute('order2');
-        }
-    }
-
-    $f3->set('food', $food);
-    $f3->set('userMeal', $meal);
-    $f3->set('meals', getMeals());
-
-    $view = new Template();
-    echo $view->render('views/orderForm1.html');
+    $GLOBALS['con']->order1();
 });
 
 //Define a route for order 2
 $f3->route('GET|POST /order2', function($f3) {
 
-    //Get the condiments from the model and add to F3 hive
-    $f3->set('conds', getCondiments());
-
-    //If the form has been posted
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-        //Add the data to the session variable
-        //If condiments were selected
-        if (isset($_POST['conds'])) {
-
-            $conds = $_POST['conds'];
-
-            //If condiments are valid
-            if (validCondiments($conds)) {
-                $conds = implode(", ", $_POST['conds']);
-            }
-            else {
-                $f3->set("errors['cond']", "Invalid selection");
-            }
-        }
-        else {
-
-            $conds = "None selected";
-        }
-
-        //Redirect user to summary page
-        if (empty($f3->get('errors'))) {
-            $_SESSION['order']->setCondiments($conds);
-            $f3->reroute('summary');
-        }
-    }
-
-    $view = new Template();
-    echo $view->render('views/orderForm2.html');
+    $GLOBALS['con']->order2();
 });
 
 //Define a summary route
 $f3->route('GET /summary', function() {
-    //echo "<h1>My Diner</h1>";
 
-    //TODO: Send data to the model
-
-    $view = new Template();
-    echo $view->render('views/summary.html');
-
-    //Clear the session data
-    session_destroy();
+    $GLOBALS['con']->summary();
 });
 
 //Run fat-free
