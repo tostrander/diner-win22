@@ -1,11 +1,39 @@
 <!-- 328/diner/views/summary.html -->
 
 <include href="views/header.html" />
+
 <body>
 <div class="container">
     <h1>Diner Orders</h1>
 
+    <table id="tblOrders">
+        <thead>
+            <tr>
+                <td>OrderID</td>
+                <td>Food</td>
+                <td>Meal</td>
+                <td>Condiments</td>
+                <td>Date & Time</td>
+            </tr>
+        </thead>
+        <tbody>
+            <repeat group="{{ @orders }}" value="{{ @order }}">
+                <tr>
+                    <td>{{ @order['order_id'] }}</td>
+                    <td>{{ @order['food'] }}</td>
+                    <td>{{ @order['meal'] }}</td>
+                    <td>{{ @order['condiments'] }}</td>
+                    <td>{{ date('m-d-y', strtotime(@order['order_date'])) }}</td>
+                </tr>
+            </repeat>
+        </tbody>
+    </table>
 </div>
 
+<script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $("#tblOrders").DataTable();
+</script>
 </body>
 </html>
