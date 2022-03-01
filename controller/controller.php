@@ -118,6 +118,10 @@ class Controller
         //echo "<h1>My Diner</h1>";
 
         //TODO: Send data to the model
+        //global $dataLayer;
+        //$dataLayer->saveOrder($order);
+
+        $GLOBALS['dataLayer']->saveOrder($_SESSION['order']);
 
         $view = new Template();
         echo $view->render('views/summary.html');

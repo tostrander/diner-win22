@@ -19,6 +19,12 @@ $f3 = Base::instance();
 $con = new Controller($f3);
 $dataLayer = new DataLayer();
 
+/*
+//Temporary test code
+$order = new Order("taco", "lunch", "salsa");
+$dataLayer->saveOrder($order);
+*/
+
 //Define a default route
 $f3->route('GET /', function() {
     $GLOBALS['con']->home();
