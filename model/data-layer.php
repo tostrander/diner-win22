@@ -53,6 +53,25 @@ class DataLayer
 
     }
 
+    //TODO: Add docblock
+    function getOrders()
+    {
+        //1. Define the query
+        $sql = "SELECT * FROM diner_order";
+
+        //2. Prepare the statement
+        $statement = $this->_dbh->prepare($sql);
+
+        //3. Bind the parameters
+
+        //4. Execute the query
+        $statement->execute();
+
+        //5. Process the results (get the primary key)
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
 
     /**
      * Return an array of condiments

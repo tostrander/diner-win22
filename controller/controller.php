@@ -120,7 +120,6 @@ class Controller
         //TODO: Send data to the model
         //global $dataLayer;
         //$dataLayer->saveOrder($order);
-
         $GLOBALS['dataLayer']->saveOrder($_SESSION['order']);
 
         $view = new Template();
@@ -128,5 +127,16 @@ class Controller
 
         //Clear the session data
         session_destroy();
+    }
+
+    function admin()
+    {
+        //Get the data from the model
+        $orders = $GLOBALS['dataLayer']->getOrders();
+        $this->_f3->set('orders', $orders);
+
+        //Display the view page
+        $view = new Template();
+        echo $view->render('views/admin.html');
     }
 }
