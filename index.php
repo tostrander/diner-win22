@@ -1,5 +1,4 @@
 <?php
-//This is my CONTROLLER
 
 //Turn on output buffering
 ob_start();
@@ -18,6 +17,7 @@ var_dump($_SESSION);
 //Create an instance of the Base class
 $f3 = Base::instance();
 $con = new Controller($f3);
+$dataLayer = new DataLayer();
 
 //Define a default route
 $f3->route('GET /', function() {
